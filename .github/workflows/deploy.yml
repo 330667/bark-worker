@@ -44,7 +44,6 @@ jobs:
 
       - name: update wrangler.toml
         run: |
-          cd dist/service
           sed -i 's/database_id = ".*"/database_id = "'$DB_ID'"/' wrangler.toml
 
 env:
