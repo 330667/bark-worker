@@ -5,6 +5,9 @@ on:
     branches:
       - main
   repository_dispatch:
+  
+env:
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
 jobs:
   deploy:
@@ -46,5 +49,10 @@ jobs:
         run: |
           sed -i 's/database_id = ".*"/database_id = "'$DB_ID'"/' wrangler.toml
 
-env:
-  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      - name: Deploy worker
+        uses: cloudflare/wrangler-action@v3.7.0
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          command: "deploy"
+          wranglerVersion: "3.77.0"
