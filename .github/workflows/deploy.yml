@@ -16,9 +16,6 @@ on:
         default: ""
         required: true
         type: string
-  
-env:
-  CLOUDFLARE_API_TOKEN: ${{ inputs.CLOUDFLARE_API_TOKEN }}
 
 jobs:
   deploy:
@@ -42,6 +39,8 @@ jobs:
         run: |
           echo "Verifying Cloudflare API Token..."
           wrangler whoami
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ inputs.CLOUDFLARE_API_TOKEN }}
           
       - name: Check and Create D1 Database
         run: |
@@ -58,10 +57,12 @@ jobs:
 
           echo "Database ID: $DB_ID"
           echo "DB_ID=$DB_ID" >> $GITHUB_ENV
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ inputs.CLOUDFLARE_API_TOKEN }}
 
       - name: Update wrangler.toml
         run: |
-          sed -i 's/database_id = ".*"/database_id = "'$DB_ID'"/' wrangler.toml
+          sed -i 's/"database_id": ".*"/"database_id": "'$DB_ID'"/' wrangler.json
 
       - name: Deploy worker
         uses: cloudflare/wrangler-action@v3.14.1
