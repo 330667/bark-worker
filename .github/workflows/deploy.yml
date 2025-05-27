@@ -66,4 +66,4 @@ jobs:
           apiToken: ${{ inouts.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ inputs.CLOUDFLARE_ACCOUNT_ID }}
           command: "deploy"
-          wranglerVersion: "3.77.0"
+          wranglerVersion: "4.16.1"
